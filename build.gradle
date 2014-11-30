@@ -1,0 +1,83 @@
+defaultTasks 'clean', 'build'
+
+buildscript {
+    repositories {
+        mavenCentral()
+
+    }
+    dependencies {
+        classpath 'org.hidetake:gradle-ssh-plugin:0.1.5'
+    }
+}
+apply plugin: 'ssh'
+apply from: file('gradle/convention.gradle')
+
+
+allprojects {
+    repositories {
+        mavenCentral()
+//        maven {
+//            url 'http://oss.sonatype.org/content/repositories/snapshots'
+//        }
+        maven {
+            url 'http://clojars.org/repo'
+        }
+        maven {
+            url 'http://repository.excilys.com/content/groups/public'
+        }
+    }
+
+    apply plugin: 'java'
+    apply plugin: "jacoco"
+
+}
+
+subprojects {
+    group = "com.ilegendsoft."
+    configure([javadoc]) {
+        options.encoding "UTF-8"
+        options.docEncoding "UTF-8"
+        options.charSet "UTF-8"
+    }
+    configure([compileJava, compileTestJava]) {
+        options.encoding = "UTF-8"
+    }
+    dependencies {
+        compile 'org.slf4j:slf4j-api:1.7.5'
+        compile 'ch.qos.logback:logback-classic:1.0.13'
+        compile 'org.codehaus.jackson:jackson-core-asl:1.9.2'
+        compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.2'
+        compile 'com.fasterxml.jackson.core:jackson-core:2.0.0'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.0.0'
+        compile 'com.fasterxml.jackson.core:jackson-annotations:2.0.0'
+        compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.0.0'
+        compile 'com.ning:async-http-client:1.7.14'
+        compile 'com.google.guava:guava:14.0'
+        compile 'com.google.inject:guice:3.0'
+        compile 'com.google.inject.extensions:guice-servlet:3.0'
+        compile 'com.google.inject.extensions:guice-assistedinject:3.0'
+        compile 'org.jruby:jruby:1.7.4'
+    }
+}
+
+project(':logger-clean') {
+    dependencies {
+        compile 'org.apache.httpcomponents:httpclient:4.2.3'
+    }
+
+    apply plugin: 'application'
+
+    applicationName = 'logger-clean'
+
+    startScripts {
+        mainClassName = "com.zcloud.logger.clean.LoggerCleanBootstrap"
+    }
+    applicationDistribution.from('src/main/script/') {
+        into "bin"
+    }
+}
+
+
+
+
+
