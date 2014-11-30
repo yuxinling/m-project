@@ -1,5 +1,5 @@
 --- !com.zcloud.logger.clean.model.LoggerCleanConfiguration
-  address: ["http://10.20.20.13:9200"]
+  address: ["http://localhost:9200"]
   reserveDays: 7
   timeOut: 180000
   perffix: ["logstash-zcloud-","logstash-nginx-"]
