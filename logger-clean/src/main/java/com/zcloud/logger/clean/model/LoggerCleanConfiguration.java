@@ -1,5 +1,7 @@
 package com.zcloud.logger.clean.model;
 
+import java.util.List;
+
 /**
  * User: yuyangning
  * Date: 5/29/14
@@ -8,12 +10,10 @@ package com.zcloud.logger.clean.model;
 public class LoggerCleanConfiguration {
 
     private String[] address;
-
-    private int reserveDays;
+    private List<IndexItem> items;
 
     private int timeOut = 120000;
 
-    private String[] perffix;
 
     public String[] getAddress() {
         return address;
@@ -21,14 +21,6 @@ public class LoggerCleanConfiguration {
 
     public void setAddress(String[] address) {
         this.address = address;
-    }
-
-    public int getReserveDays() {
-        return reserveDays;
-    }
-
-    public void setReserveDays(int reserveDays) {
-        this.reserveDays = reserveDays;
     }
 
     public int getTimeOut() {
@@ -39,11 +31,11 @@ public class LoggerCleanConfiguration {
         this.timeOut = timeOut;
     }
 
-    public String[] getPerffix() {
-        return perffix;
+    public List<IndexItem> getItems() {
+        return items;
     }
 
-    public void setPerffix(String[] perffix) {
-        this.perffix = perffix;
+    public void setItems(List<IndexItem> items) {
+        this.items = items;
     }
 }

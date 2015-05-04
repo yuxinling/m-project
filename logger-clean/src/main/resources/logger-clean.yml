@@ -1,5 +1,9 @@
 --- !com.zcloud.logger.clean.model.LoggerCleanConfiguration
   address: ["http://localhost:9200"]
-  reserveDays: 7
   timeOut: 180000
-  perffix: ["logstash-zcloud-","logstash-nginx-"]
+  items:
+    - perffix: logstash-nginx-
+      days: 7
+
+    - perffix: logstash-zcloud-
+      days: 7

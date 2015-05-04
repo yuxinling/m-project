@@ -2,6 +2,8 @@ package com.zcloud.logger.clean.model;
 
 import com.zcloud.logger.clean.common.SunYaml;
 
+import java.util.List;
+
 /**
  * User: yuyangning
  * Date: 9/9/14
@@ -18,16 +20,6 @@ public class LoggerCleanConfigurationYaml extends LoggerCleanConfiguration {
     }
 
     @Override
-    public void setPerffix(String[] perffix) {
-        loggerCleanConfiguration.setPerffix(perffix);
-    }
-
-    @Override
-    public String[] getPerffix() {
-        return loggerCleanConfiguration.getPerffix();
-    }
-
-    @Override
     public void setTimeOut(int timeOut) {
         super.setTimeOut(timeOut);
     }
@@ -38,16 +30,6 @@ public class LoggerCleanConfigurationYaml extends LoggerCleanConfiguration {
     }
 
     @Override
-    public void setReserveDays(int reserveDays) {
-        loggerCleanConfiguration.setReserveDays(reserveDays);
-    }
-
-    @Override
-    public int getReserveDays() {
-        return loggerCleanConfiguration.getReserveDays();
-    }
-
-    @Override
     public void setAddress(String[] address) {
         loggerCleanConfiguration.setAddress(address);
     }
@@ -55,5 +37,15 @@ public class LoggerCleanConfigurationYaml extends LoggerCleanConfiguration {
     @Override
     public String[] getAddress() {
         return loggerCleanConfiguration.getAddress();
+    }
+
+    @Override
+    public void setItems(List<IndexItem> items) {
+        loggerCleanConfiguration.setItems(items);
+    }
+
+    @Override
+    public List<IndexItem> getItems() {
+        return loggerCleanConfiguration.getItems();
     }
 }

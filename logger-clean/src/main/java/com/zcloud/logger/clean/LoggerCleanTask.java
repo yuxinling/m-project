@@ -1,7 +1,9 @@
 package com.zcloud.logger.clean;
 
+import com.zcloud.logger.clean.model.IndexItem;
 import com.zcloud.logger.clean.model.LoggerCleanConfiguration;
 import com.zcloud.logger.clean.utils.CommonUtils;
+import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,14 +36,16 @@ public class LoggerCleanTask extends TimerTask {
 
     public void deleteHistory() {
         for (String address : cleanConfig.getAddress()) {
-            List<String> indexs = elasticManager.getIndexsForPerffix(address, cleanConfig.getPerffix());
+            List<IndexItem> items = elasticManager.getIndexItem(address, cleanConfig.getItems());
 
-            if (indexs == null || indexs.size() == 0) continue;
-            for (String index : indexs) {
+            if (items == null || items.size() == 0) continue;
+            for (IndexItem item : items) {
+                if (item == null || item.getIndex() == null) continue;
 
+                String index = item.getIndex();
                 String dateString = index.substring(index.lastIndexOf("-") + 1, index.length());
                 //logger.info("Date String : " + dateString);
-                if (CommonUtils.isNotIn(cleanConfig.getReserveDays(), dateString)) {
+                if (CommonUtils.isNotIn(item.getDays(), dateString)) {
 
                     try {
                         elasticManager.deleteIndex(address, index);
@@ -56,12 +60,11 @@ public class LoggerCleanTask extends TimerTask {
 
     @Override
     public void run() {
-        String dateString = CommonUtils.dateString(cleanConfig.getReserveDays());
-
-        for (String perffix : cleanConfig.getPerffix()) {
+        for (IndexItem item : cleanConfig.getItems()) {
+            String dateString = CommonUtils.dateString(item.getDays());
 
             for (String address : cleanConfig.getAddress()) {
-                elasticManager.deleteIndex(address, perffix + dateString);
+                elasticManager.deleteIndex(address, item.getPerffix() + dateString);
             }
 
             try {

@@ -1,6 +1,7 @@
 package com.zcloud.logger.clean;
 
 import com.google.common.collect.Lists;
+import com.zcloud.logger.clean.model.IndexItem;
 import com.zcloud.logger.clean.utils.Jsons;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -17,8 +18,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * User: yuyangning
@@ -73,27 +72,31 @@ public class ElasticIndexManager {
         }
     }
 
-    public List<String> getIndexsForPerffix(String address, String[] perffix) {
+    public List<IndexItem> getIndexItem(String address, List<IndexItem> items) {
 
         List<String> indexs = getIndexs(address);
-
-        if (perffix == null || perffix.length == 0) return null;
+        if (items == null || items.size() == 0) return null;
 
         if (indexs != null && indexs.size() > 0) {
 
-            List<String> outs = Lists.newArrayList();
+            List<IndexItem> outs = Lists.newArrayList();
             for (String index : indexs) {
+                for (IndexItem item : items) {
+                    if (index.startsWith(item.getPerffix())) {
 
-                for (String per : perffix) {
+                        logger.info("Get Host[{}] index [{}] for perffix [{}] .", address, index, item.getPerffix());
 
-                    if (index.startsWith(per)) {
-                        outs.add(index);
+                        IndexItem iitem = new IndexItem();
+                        iitem.setDays(item.getDays());
+                        iitem.setIndex(index);
+                        iitem.setPerffix(item.getIndex());
+
+                        outs.add(iitem);
                         continue;
                     }
                 }
             }
 
-            logger.debug("Get Host[{}] Indexs [{}] for perffix [{}] .", address, outs, perffix);
             return outs;
         }
         return null;
