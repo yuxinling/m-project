@@ -1,9 +1,43 @@
 --- !com.zcloud.logger.clean.model.LoggerCleanConfiguration
   address: ["http://localhost:9200"]
+#  address: ["http://loges.zcloud.io"]
   timeOut: 180000
   items:
+    - perffix: logstash-deployer-
+      days: 7
+
+    - perffix: logstash-push-
+      days: 7
+
+    - perffix: logstash-logcenter-
+      days: 7
+
+    - perffix: logstash-kafka-
+      days: 7
+
+    - perffix: logstash-cassandra-
+      days: 7
+
+    - perffix: logstash-nginx-error-
+      days: 7
+
     - perffix: logstash-nginx-
+      days: 7
+
+    - perffix: logstash-analytics-
       days: 7
 
     - perffix: logstash-zcloud-
       days: 7
+
+    - perffix: logstash-es-
+      days: 7
+
+    - perffix: logstash-analytics_service_snake-
+      days: 30
+
+    - perffix: logstash-analytics_service_cdh_hive-
+      days: 30
+
+    - perffix: logstash-analytics_service_cdh_job-
+      days: 30

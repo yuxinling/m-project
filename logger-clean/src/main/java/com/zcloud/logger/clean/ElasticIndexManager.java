@@ -47,10 +47,8 @@ public class ElasticIndexManager {
                 public List<String> handleResponse(HttpResponse response) throws IOException {
 
                     if (response.getStatusLine().getStatusCode() == 200) {
-
                         String result = EntityUtils.toString(response.getEntity());
                         Map<String, Object> data = Jsons.objectFromJSONStr(result, Map.class);
-
                         if (data != null) {
                             List<String> indexs = Lists.newArrayList();
                             for (String key : data.keySet()) {
@@ -82,10 +80,10 @@ public class ElasticIndexManager {
             List<IndexItem> outs = Lists.newArrayList();
             for (String index : indexs) {
                 for (IndexItem item : items) {
-                    if (index.startsWith(item.getPerffix())) {
+                    if (index.startsWith(item.getPerffix())
+                            && index.trim().length() == item.getPerffix().trim().length() + 10) {
 
                         logger.info("Get Host[{}] index [{}] for perffix [{}] .", address, index, item.getPerffix());
-
                         IndexItem iitem = new IndexItem();
                         iitem.setDays(item.getDays());
                         iitem.setIndex(index);
@@ -116,19 +114,14 @@ public class ElasticIndexManager {
             logger.debug("Start delete [{}] ", url);
 
             HttpDelete delete = new HttpDelete(url);
-
             httpClient.execute(delete, new ResponseHandler<Void>() {
 
                 @Override
                 public Void handleResponse(HttpResponse response) throws IOException {
-
                     String result = EntityUtils.toString(response.getEntity());
-
                     if (response.getStatusLine().getStatusCode() == 200) {
-
                         Map data = Jsons.objectFromJSONStr(result, Map.class);  //"ok":true, "acknowledged":true  //V 1.2 -> {acknowledged=true}
                         if (data != null) {
-
                             //Boolean ok = (Boolean) data.get("ok");
                             Boolean acknowledged = (Boolean) data.get("acknowledged");
                             if (acknowledged) {
